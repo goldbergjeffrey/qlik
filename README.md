@@ -46,3 +46,7 @@ Replace:
 
 * westeurope - with the location you prefer to deploy to
 * myresourcegroup - with a name of a resource group you want to create and/or deploy to
+
+## How to continue?
+
+This templated deployment will only deploy the infrastructure/Virtual Machine that you need in order to fullfill a complete Qlik Sense setup. Please follow the rest of the documentation from Qlik in order to fullfill the setup of Qlik Sense on your VM.
