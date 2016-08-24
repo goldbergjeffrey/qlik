@@ -26,12 +26,22 @@ azure group deployment create --template-uri https://raw.githubusercontent.com/k
 eploy.json myresourcegroup
 ~~~~
 
-Skip first command if you want to deploy to an allready existing resource group
+## PowerShell
+
+Deploy using [PowerShell]() by executing the following commands.
+
+~~~~
+New-AzureRmResourceGroup -Name myresourcegroup -Location westeurope
+
+New-AzureRmResourceGroupDeployment -ResourceGroupName myresourcegroup -TemplateUri https://raw.githubusercontent.com/krist00fer/qlik/master/Qli
+kSense/QlikSenseAzure/Templates/azuredeploy.json
+~~~~
+
+### Note on console deployments
+
+In all of the above examples, don't execute the first command if you plan on deploying to an allready existing Resource Group in your Azure Subscription.
 
 Replace:
 
 * westeurope - with the location you prefer to deploy to
 * myresourcegroup - with a name of a resource group you want to create and/or deploy to
-
-## PowerShell
-
