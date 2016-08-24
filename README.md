@@ -12,7 +12,7 @@ This template deploys a Virtual Machine with recommended settings for running Ql
 
 ## Deploy using portal
 
-Deploy this template to Azure by clicking on the "Deploy to Azure" button above or get a visual representation of it by clicking the "Visualize" button.
+Deploy this template to Azure by clicking on the "Deploy to Azure" button above or get a visual representation of it by clicking the "Visualize" button. You could also copy the template (see link above to the template in this repository) and paste it directly in the [Azure Portal](https://portal.azure.com) when you select to create a new "Templated Deployment".
 
 
 ## Azure CLI
@@ -25,6 +25,13 @@ azure group create myresourcegroup --location westeurope
 azure group deployment create --template-uri https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/Templates/azured
 eploy.json myresourcegroup
 ~~~~
+
+Skip first command if you want to deploy to an allready existing resource group
+
+Replace:
+
+* westeurope - with the location you prefer to deploy to
+* myresourcegroup - with a name of a resource group you want to create and/or deploy to
 
 ## PowerShell
 
