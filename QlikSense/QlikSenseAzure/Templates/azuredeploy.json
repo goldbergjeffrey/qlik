@@ -1,0 +1,307 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vmName": {
+      "defaultValue": "qliksense",
+      "type": "string",
+      "metadata": {
+        "description": "Name of Virtual Machine to create. Has to be unique in subscription"
+      }
+    },
+    "vmSize": {
+      "type": "string",
+      "defaultValue": "Standard_DS3_v2",
+      "allowedValues": [
+        "Standard_DS3_v2",
+        "Standard_DS12_v2"
+      ],
+      "metadata": {
+        "description": "Size of VM to be created. Can be changed later on"
+      }
+    },
+    "dnsLabelPrefix": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Unique DNS Name for the Public IP used to access the Virtual Machine. Has to be unique within the region deployed to"
+      }
+    },
+    "userName": {
+      "defaultValue": "qlik",
+      "type": "string",
+      "metadata": {
+        "description": "Name of administrator account to be created on the Virtual Machine"
+      }
+    },
+    "password": {
+      "type": "securestring",
+      "minLength": 10,
+      "metadata": {
+        "description": "Password for the Virtual Machine"
+      }
+    },
+    "virtualNetworkName": {
+      "defaultValue": "qliksensevn",
+      "type": "string",
+      "metadata": {
+        "description": "Virtual Network to connect VM to (will be created if it doesn't exists)"
+      }
+    },
+    "subnetName": {
+      "defaultValue": "default",
+      "type": "string",
+      "metadata": {
+        "description": "Subnet within Virtual Network to add VM to (will be created if it doesn't exists)"
+      }
+
+    }
+  },
+  "variables": {
+    "saName": "[concat('qlik', uniqueString(resourceGroup().id))]",
+    "nicName": "[concat(parameters('vmName'), 'nic')]",
+    "pipName": "[concat(parameters('vmName'), 'pip')]",
+    "nsgName": "[concat(parameters('vmName'), 'nsg')]"
+  },
+  "resources": [
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Compute/virtualMachines/QlikVM'.",
+      "type": "Microsoft.Compute/virtualMachines",
+      "name": "[parameters('vmName')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Virtual Machine, VM"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('vmSize')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "MicrosoftWindowsServer",
+            "offer": "WindowsServer",
+            "sku": "2012-R2-Datacenter",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[parameters('vmName')]",
+            "createOption": "FromImage",
+            "vhd": {
+              "uri": "[concat('https', '://', variables('saName'), '.blob.core.windows.net', concat('/vhds/', parameters('vmName'),'201672413633.vhd'))]"
+            },
+            "caching": "ReadWrite"
+          },
+          "dataDisks": []
+        },
+        "osProfile": {
+          "computerName": "[parameters('vmName')]",
+          "adminUsername": "[parameters('userName')]",
+          "windowsConfiguration": {
+            "provisionVMAgent": true,
+            "enableAutomaticUpdates": true
+          },
+          "secrets": [],
+          "adminPassword": "[parameters('password')]"
+        },
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+            }
+          ]
+        }
+      },
+      "resources": [],
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('saName'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/networkInterfaces/qlikvm740'.",
+      "type": "Microsoft.Network/networkInterfaces",
+      "name": "[variables('nicName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Network Interface Card, NIC"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAddress": "10.0.0.4",
+              "privateIPAllocationMethod": "Dynamic",
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]"
+              },
+              "subnet": {
+                "id": "[concat(resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName')), '/subnets/', parameters('subnetName'))]"
+              }
+            }
+          }
+        ],
+        "dnsSettings": {
+          "dnsServers": []
+        },
+        "enableIPForwarding": false,
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+        }
+      },
+      "resources": [],
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('pipName'))]",
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+        "[resourceId('Microsoft.Network/networkSecurityGroups', variables('nsgName'))]"
+      ]
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/networkSecurityGroups/QlikNSG'.",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('nsgName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Network Security Group, NSG"
+      },
+      "properties": {
+        "securityRules": [
+          {
+            "name": "HTTP",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "80",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HTTPS",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "443",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 110,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HTTPAuth",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4248",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 120,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "HTTPSAuth",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "4244",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 130,
+              "direction": "Inbound"
+            }
+          },
+          {
+            "name": "RDP",
+            "properties": {
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "*",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 140,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      },
+      "resources": [],
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/publicIPAddresses/QlikPIP'.",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "name": "[variables('pipName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Public IP, PIP"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "idleTimeoutInMinutes": 4,
+        "dnsSettings": {
+          "domainNameLabel": "[parameters('dnsLabelPrefix')]"
+        }
+      },
+      "resources": [],
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/virtualNetworks/QlikVN'.",
+      "type": "Microsoft.Network/virtualNetworks",
+      "name": "[parameters('virtualNetworkName')]",
+      "apiVersion": "2016-03-30",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Virtual Network, VN"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "10.0.0.0/16"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "default",
+            "properties": {
+              "addressPrefix": "10.0.0.0/24"
+            }
+          }
+        ]
+      },
+      "resources": [],
+      "dependsOn": []
+    },
+    {
+      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Storage/storageAccounts/qliktemplatestorage'.",
+      "type": "Microsoft.Storage/storageAccounts",
+      "sku": {
+        "name": "Premium_LRS",
+        "tier": "Premium"
+      },
+      "kind": "Storage",
+      "name": "[variables('saName')]",
+      "apiVersion": "2016-01-01",
+      "location": "[resourceGroup().location]",
+      "tags": {
+        "displayName": "Qlik Sense Storage Account, SA"
+      },
+      "properties": {},
+      "resources": [],
+      "dependsOn": []
+    }
+  ]
+}
