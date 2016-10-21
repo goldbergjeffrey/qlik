@@ -63,15 +63,27 @@
         "description": "Subnet within Virtual Network to add VM to (will be created if it doesn't exists)"
       }
 
-    }
+    },
+      "_artifactsLocation": {
+          "type": "string",
+          "metadata": {
+              "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
+          }
+      },
+      "_artifactsLocationSasToken": {
+          "type": "securestring",
+          "metadata": {
+              "description": "Auto-generated token to access _artifactsLocation"
+          }
+      }
   },
   "variables": {
     "saName": "[concat('qlik', uniqueString(resourceGroup().id))]",
     "nicName": "[concat(parameters('vmName'), 'nic')]",
     "pipName": "[concat(parameters('vmName'), 'pip')]",
     "nsgName": "[concat(parameters('vmName'), 'nsg')]",
-    "Qlik Sense SetupScriptFolder": "CustomScripts",
-    "Qlik Sense SetupScriptFileName": "Qlik Sense Setup.ps1"
+      "qlicksetupScriptFolder": "CustomScripts",
+      "qlicksetupScriptFileName": "qlicksetup.ps1"
   },
   "resources": [
     {
@@ -122,7 +134,31 @@
           ]
         }
       },
-      "resources": [],
+      "resources": [
+          {
+              "name": "qlikCSE",
+              "type": "extensions",
+              "location": "[resourceGroup().location]",
+              "apiVersion": "2015-06-15",
+              "dependsOn": [
+                  "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+              ],
+              "tags": {
+                  "displayName": "Qlik Sense Setup Custom Script Extension, CSE"
+              },
+              "properties": {
+                  "publisher": "Microsoft.Compute",
+                  "type": "CustomScriptExtension",
+                  "typeHandlerVersion": "1.4",
+                  "autoUpgradeMinorVersion": true,
+                  "settings": {
+                      "fileUris": [
+                          ""
+                      ],
+                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('qlicksetupScriptFolder'), '/', variables('qlicksetupScriptFileName'))]"
+                  }
+              }
+          }],
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('saName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
@@ -312,30 +348,6 @@
       "properties": {},
       "resources": [],
       "dependsOn": []
-    },
-    {
-      "name": "[concat(parameters('vmName'), '/qlik-sense-setup-extension')]",
-      "type": "Microsoft.Compute/virtualMachines/extensions",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
-      "dependsOn": [
-        "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
-      ],
-      "tags": {
-        "displayName": "Qlik Sense Setup"
-      },
-      "properties": {
-        "publisher": "Microsoft.Compute",
-        "type": "CustomScriptExtension",
-        "typeHandlerVersion": "1.7",
-        "autoUpgradeMinorVersion": true,
-        "settings": {
-          "fileUris": [
-            "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1"
-          ],
-          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File setup.ps1')]"
-        }
-      }
     }
   ]
 }
