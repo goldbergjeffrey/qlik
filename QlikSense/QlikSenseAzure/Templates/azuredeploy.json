@@ -63,19 +63,7 @@
         "description": "Subnet within Virtual Network to add VM to (will be created if it doesn't exists)"
       }
 
-    },
-      "_artifactsLocation": {
-          "type": "string",
-          "metadata": {
-              "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
-          }
-      },
-      "_artifactsLocationSasToken": {
-          "type": "securestring",
-          "metadata": {
-              "description": "Auto-generated token to access _artifactsLocation"
-          }
-      }
+    }
   },
   "variables": {
     "saName": "[concat('qlik', uniqueString(resourceGroup().id))]",
@@ -86,7 +74,6 @@
   },
   "resources": [
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Compute/virtualMachines/QlikVM'.",
       "type": "Microsoft.Compute/virtualMachines",
       "name": "[parameters('vmName')]",
       "apiVersion": "2015-06-15",
@@ -164,7 +151,6 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/networkInterfaces/qlikvm740'.",
       "type": "Microsoft.Network/networkInterfaces",
       "name": "[variables('nicName')]",
       "apiVersion": "2016-03-30",
@@ -204,7 +190,6 @@
       ]
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/networkSecurityGroups/QlikNSG'.",
       "type": "Microsoft.Network/networkSecurityGroups",
       "name": "[variables('nsgName')]",
       "apiVersion": "2016-03-30",
@@ -285,7 +270,6 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/publicIPAddresses/QlikPIP'.",
       "type": "Microsoft.Network/publicIPAddresses",
       "name": "[variables('pipName')]",
       "apiVersion": "2016-03-30",
@@ -304,7 +288,6 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Network/virtualNetworks/QlikVN'.",
       "type": "Microsoft.Network/virtualNetworks",
       "name": "[parameters('virtualNetworkName')]",
       "apiVersion": "2016-03-30",
@@ -331,7 +314,6 @@
       "dependsOn": []
     },
     {
-      "comments": "Generalized from resource: '/subscriptions/3a856395-1af1-4cb1-925d-527c857e5995/resourceGroups/qlik/providers/Microsoft.Storage/storageAccounts/qliktemplatestorage'.",
       "type": "Microsoft.Storage/storageAccounts",
       "sku": {
         "name": "Premium_LRS",
