@@ -155,7 +155,7 @@
               "fileUris": [
                 "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/Qlik-Sense-Setup.ps1"
               ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Qlik-Sense-Setup.ps1')]"
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Qlik-Sense-Setup.ps1', parameters('vmName'), parameters('userName'))]"
             }
           }
         }
