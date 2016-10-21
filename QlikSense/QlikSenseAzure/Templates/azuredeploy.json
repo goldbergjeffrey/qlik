@@ -122,32 +122,7 @@
           ]
         }
       },
-      "resources": [
-        {
-          "name": "qlik-sense-setup",
-          "type": "extensions",
-          "location": "[resourceGroup().location]",
-          "apiVersion": "2015-06-15",
-          "dependsOn": [
-            "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
-          ],
-          "tags": {
-            "displayName": "Qlik Sense Setup"
-          },
-          "properties": {
-            "publisher": "Microsoft.Compute",
-            "type": "CustomScriptExtension",
-            "typeHandlerVersion": "1.4",
-            "autoUpgradeMinorVersion": true,
-            "settings": {
-              "fileUris": [
-                "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/Qlik-Sense-Setup.ps1"
-              ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Qlik-Sense-Setup.ps1', parameters('vmName'), parameters('userName'))]"
-            }
-          }
-        }
-      ],
+      "resources": [],
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('saName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
@@ -337,6 +312,30 @@
       "properties": {},
       "resources": [],
       "dependsOn": []
+    },
+    {
+      "name": "[concat(parameters('vmName'), '/qlik-sense-setup-extension')]",
+      "type": "Microsoft.Compute/virtualMachines/extensions",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+      ],
+      "tags": {
+        "displayName": "Qlik Sense Setup"
+      },
+      "properties": {
+        "publisher": "Microsoft.Compute",
+        "type": "CustomScriptExtension",
+        "typeHandlerVersion": "1.7",
+        "autoUpgradeMinorVersion": true,
+        "settings": {
+          "fileUris": [
+            "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1"
+          ],
+          "commandToExecute": "[concat('powershell.exe -ExecutionPolicy Unrestricted -File setup.ps1')]"
+        }
+      }
     }
   ]
 }
