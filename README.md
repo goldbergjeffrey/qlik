@@ -1,7 +1,7 @@
 # Recommended VM deployment for Qlik Sense on Azure 
 WARNING - This is a sample template and documentation that has not yet been aproved by Qlik. Please use at your own risk!!!
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/hhttps%3A%2F%2Fraw.githubusercontent.com%2Fgoldbergjeffrey%2Fqlik%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fgoldbergjeffrey%2Fqlik%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 <a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fgoldbergjeffrey%2Fqlik%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
