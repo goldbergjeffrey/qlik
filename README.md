@@ -1,10 +1,10 @@
 # Recommended VM deployment for Qlik Sense on Azure 
 WARNING - This is a sample template and documentation that has not yet been aproved by Qlik. Please use at your own risk!!!
 
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fkrist00fer%2Fqlik%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fgithub.com%2Fgoldbergjeffrey%2Fqlik%2Fblob%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
-<a href="http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2Fkrist00fer%2Fqlik%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
+<a href="http://armviz.io/#/?load=https%3A%2F%2Fgithub.com%2Fgoldbergjeffrey%2Fqlik%2Fblob%2Fmaster%2FQlikSense%2FQlikSenseAzure%2FTemplates%2Fazuredeploy.json" target="_blank">
     <img src="http://armviz.io/visualizebutton.png"/>
 </a>
 
@@ -23,8 +23,7 @@ Deploy using [Azure CLI](https://azure.microsoft.com/en-us/documentation/article
 ~~~~
 azure group create myresourcegroup --location westeurope
 
-azure group deployment create --template-uri https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/Templates/azured
-eploy.json myresourcegroup
+azure group deployment create --template-uri https://github.com/goldbergjeffrey/qlik/blob/master/QlikSense/QlikSenseAzure/Templates/azuredeploy.json myresourcegroup
 ~~~~
 
 ## PowerShell
@@ -34,8 +33,7 @@ Deploy using [PowerShell]() by executing the following commands.
 ~~~~
 New-AzureRmResourceGroup -Name myresourcegroup -Location westeurope
 
-New-AzureRmResourceGroupDeployment -ResourceGroupName myresourcegroup -TemplateUri https://raw.githubusercontent.com/krist00fer/qlik/master/Qli
-kSense/QlikSenseAzure/Templates/azuredeploy.json
+New-AzureRmResourceGroupDeployment -ResourceGroupName myresourcegroup -TemplateUri https://github.com/goldbergjeffrey/qlik/blob/master/QlikSense/QlikSenseAzure/Templates/azuredeploy.json
 ~~~~
 
 ### Note on console deployments
