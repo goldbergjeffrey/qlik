@@ -125,7 +125,7 @@
           "name": "[variables('cseName')]",
           "type": "extensions",
           "location": "[resourceGroup().location]",
-          "apiVersion": "2015-05-01-preview",
+          "apiVersion": "2016-03-30",
           "dependsOn": [
             "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
           ],
@@ -141,7 +141,7 @@
               "fileUris": [
                 "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1"
               ],
-              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File setup.ps1"
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File setup.ps1', ' ', parameters('vmName'), ' ', parameters('userName'))]"
             }
           }
         }],
