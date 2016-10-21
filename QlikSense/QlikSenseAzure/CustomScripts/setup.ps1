@@ -35,4 +35,8 @@ $pass | Out-File $tmpfile -Append
 # Download QlikSense Setup.exe here!!! (This sample uses Notepad++ as an example)
 Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Installer.x64.exe' -OutFile "c:\tmp\setup.exe"
 
-& "c:\tmp\setup.exe" /S
+Invoke-WebRequest 'https://da3hntz84uekx.cloudfront.net/QlikSense/3.1.1/1/_MSI/Qlik_Sense_setup.exe' -OutFile "c:\tmp\Qlik_Sense_setup.exe"
+
+& "c:\tmp\Qlik_Sense_setup.exe" -silent -log "c:\tmp\qliksenseinstall.log" userwithdomain="$combinedName" userpassword="$pass" dbpassword="$pass" hostname="$vmname"
+
+#& "c:\tmp\setup.exe" /S
