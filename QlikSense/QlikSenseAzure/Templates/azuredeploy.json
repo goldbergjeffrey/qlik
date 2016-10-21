@@ -151,11 +151,11 @@
             "type": "CustomScriptExtension",
             "typeHandlerVersion": "1.4",
             "autoUpgradeMinorVersion": true,
-            "settings": { 
+            "settings": {
               "fileUris": [
-                "[concat(parameters('_artifactsLocation'), '/', variables('Qlik Sense SetupScriptFolder'), '/', variables('Qlik Sense SetupScriptFileName'), parameters('_artifactsLocationSasToken'))]"
+                "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/Qlik-Sense-Setup.ps1"
               ],
-              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('Qlik Sense SetupScriptFolder'), '/', variables('Qlik Sense SetupScriptFileName'))]"
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File Qlik-Sense-Setup.ps1')]"
             }
           }
         }

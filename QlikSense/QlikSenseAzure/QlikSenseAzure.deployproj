@@ -29,6 +29,7 @@
     <Folder Include="Templates\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CustomScripts\Qlik-Sense-Setup.ps1" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
