@@ -32,6 +32,33 @@ $password | Out-File $tmpfile -Append
 $combinedName | Out-File $tmpfile -Append
 $pass | Out-File $tmpfile -Append 
 
+function Disable-InternetExplorerESC {
+    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
+    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
+    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 0
+    Stop-Process -Name Explorer
+    "IE Enhanced Security Configuration (ESC) has been disabled." | Out-File $tmpfile -Append
+}
+function Enable-InternetExplorerESC {
+    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
+    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
+    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 1
+    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 1
+    Stop-Process -Name Explorer
+    Write-Host "IE Enhanced Security Configuration (ESC) has been enabled." -ForegroundColor Green
+}
+function Disable-UserAccessControl {
+    Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000
+    Write-Host "User Access Control (UAC) has been disabled." -ForegroundColor Green    
+}
+
+function timestamp {
+	$a = Get-Date
+	$b = $a.ToString('yyyy-mm-ddThh:mm:ssZ')
+	return $b
+}
+
 # Download QlikSense Setup.exe here!!! (This sample uses Notepad++ as an example)
 #Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Installer.x64.exe' -OutFile "c:\tmp\setup.exe"
 
@@ -60,32 +87,6 @@ New-NetFirewallRule -DisplayName "Qlik Sense" -Direction Inbound -action Allow -
 
 timestamp "Firewall Rules added" | Out-File $tmpfile -Append
 
-function Disable-InternetExplorerESC {
-    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
-    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
-    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 0
-    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 0
-    Stop-Process -Name Explorer
-    "IE Enhanced Security Configuration (ESC) has been disabled." | Out-File $tmpfile -Append
-}
-function Enable-InternetExplorerESC {
-    $AdminKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
-    $UserKey = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A8-37EF-4b3f-8CFC-4F3A74704073}"
-    Set-ItemProperty -Path $AdminKey -Name "IsInstalled" -Value 1
-    Set-ItemProperty -Path $UserKey -Name "IsInstalled" -Value 1
-    Stop-Process -Name Explorer
-    Write-Host "IE Enhanced Security Configuration (ESC) has been enabled." -ForegroundColor Green
-}
-function Disable-UserAccessControl {
-    Set-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System" -Name "ConsentPromptBehaviorAdmin" -Value 00000000
-    Write-Host "User Access Control (UAC) has been disabled." -ForegroundColor Green    
-}
-
-function timestamp {
-	$a = Get-Date
-	$b = $a.ToString('yyyy-mm-ddThh:mm:ssZ')
-	return $b
-}
 
 timestamp "Disabling Internet Explorer Security Mode" | Out-File $tmpfile -Append
 Disable-InternetExplorerESC
