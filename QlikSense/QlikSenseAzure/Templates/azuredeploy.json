@@ -82,8 +82,7 @@
     "nicName": "[concat(parameters('vmName'), 'nic')]",
     "pipName": "[concat(parameters('vmName'), 'pip')]",
     "nsgName": "[concat(parameters('vmName'), 'nsg')]",
-      "qlicksetupScriptFolder": "CustomScripts",
-      "qlicksetupScriptFileName": "qlicksetup.ps1"
+    "cseName": "[concat(parameters('vmName'), 'cse')]"
   },
   "resources": [
     {
@@ -135,30 +134,30 @@
         }
       },
       "resources": [
-          {
-              "name": "qlikCSE",
-              "type": "extensions",
-              "location": "[resourceGroup().location]",
-              "apiVersion": "2015-06-15",
-              "dependsOn": [
-                  "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+        {
+          "name": "[variables('cseName')]",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2015-05-01-preview",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+          ],
+          "tags": {
+            "displayName": "Qlik Sense Setup Custom Script Extension, CSE"
+          },
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.8",
+            "autoUpgradeMinorVersion": true,
+            "settings": {
+              "fileUris": [
+                "https://raw.githubusercontent.com/krist00fer/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1"
               ],
-              "tags": {
-                  "displayName": "Qlik Sense Setup Custom Script Extension, CSE"
-              },
-              "properties": {
-                  "publisher": "Microsoft.Compute",
-                  "type": "CustomScriptExtension",
-                  "typeHandlerVersion": "1.4",
-                  "autoUpgradeMinorVersion": true,
-                  "settings": {
-                      "fileUris": [
-                          ""
-                      ],
-                      "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('qlicksetupScriptFolder'), '/', variables('qlicksetupScriptFileName'))]"
-                  }
-              }
-          }],
+              "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File setup.ps1"
+            }
+          }
+        }],
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('saName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
