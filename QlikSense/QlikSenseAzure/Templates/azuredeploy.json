@@ -63,13 +63,27 @@
         "description": "Subnet within Virtual Network to add VM to (will be created if it doesn't exists)"
       }
 
+    },
+    "_artifactsLocation": {
+      "type": "string",
+      "metadata": {
+        "description": "Auto-generated container in staging storage account to receive post-build staging folder upload"
+      }
+    },
+    "_artifactsLocationSasToken": {
+      "type": "securestring",
+      "metadata": {
+        "description": "Auto-generated token to access _artifactsLocation"
+      }
     }
   },
   "variables": {
     "saName": "[concat('qlik', uniqueString(resourceGroup().id))]",
     "nicName": "[concat(parameters('vmName'), 'nic')]",
     "pipName": "[concat(parameters('vmName'), 'pip')]",
-    "nsgName": "[concat(parameters('vmName'), 'nsg')]"
+    "nsgName": "[concat(parameters('vmName'), 'nsg')]",
+    "Qlik Sense SetupScriptFolder": "CustomScripts",
+    "Qlik Sense SetupScriptFileName": "Qlik Sense Setup.ps1"
   },
   "resources": [
     {
@@ -120,7 +134,32 @@
           ]
         }
       },
-      "resources": [],
+      "resources": [
+        {
+          "name": "Qlik Sense Setup",
+          "type": "extensions",
+          "location": "[resourceGroup().location]",
+          "apiVersion": "2015-06-15",
+          "dependsOn": [
+            "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+          ],
+          "tags": {
+            "displayName": "Qlik Sense Setup"
+          },
+          "properties": {
+            "publisher": "Microsoft.Compute",
+            "type": "CustomScriptExtension",
+            "typeHandlerVersion": "1.4",
+            "autoUpgradeMinorVersion": true,
+            "settings": { 
+              "fileUris": [
+                "[concat(parameters('_artifactsLocation'), '/', variables('Qlik Sense SetupScriptFolder'), '/', variables('Qlik Sense SetupScriptFileName'), parameters('_artifactsLocationSasToken'))]"
+              ],
+              "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ', variables('Qlik Sense SetupScriptFolder'), '/', variables('Qlik Sense SetupScriptFileName'))]"
+            }
+          }
+        }
+      ],
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('saName'))]",
         "[resourceId('Microsoft.Network/networkInterfaces', variables('nicName'))]"
