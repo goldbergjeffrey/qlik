@@ -124,7 +124,7 @@
       },
       "resources": [
         {
-          "name": "Qlik Sense Setup",
+          "name": "qlik-sense-setup",
           "type": "extensions",
           "location": "[resourceGroup().location]",
           "apiVersion": "2015-06-15",
