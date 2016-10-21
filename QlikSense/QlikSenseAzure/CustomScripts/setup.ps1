@@ -23,7 +23,7 @@ $password = $Args[2]
 
 #attempt to decrypt the password
 $combinedName = $vmName + '\' + $userName
-$Credentials = New-Object System.Management.Automation.PSCredential ` -ArgumentList $UserName, $sec_password
+$Credentials = New-Object System.Management.Automation.PSCredential ` -ArgumentList $userName, $password
 $pass = $Credentials.GetNetworkCredential().Password
 
 $vmName | Out-File $tmpfile -Append
@@ -37,6 +37,6 @@ Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Inst
 
 Invoke-WebRequest 'https://da3hntz84uekx.cloudfront.net/QlikSense/3.1.1/1/_MSI/Qlik_Sense_setup.exe' -OutFile "c:\tmp\Qlik_Sense_setup.exe"
 
-& "c:\tmp\Qlik_Sense_setup.exe" -silent -log "c:\tmp\qliksenseinstall.log" userwithdomain="$combinedName" userpassword="$pass" dbpassword="$pass" hostname="$vmname"
+& "c:\tmp\Qlik_Sense_setup.exe" -silent -log "c:\tmp\qliksenseinstall.log" userwithdomain="$combinedName" userpassword="$pass" dbpassword="$password" hostname="$vmname"
 
 #& "c:\tmp\setup.exe" /S
