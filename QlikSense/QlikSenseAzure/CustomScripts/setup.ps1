@@ -76,7 +76,7 @@ Invoke-WebRequest 'https://da3hntz84uekx.cloudfront.net/QlikSense/3.1.1/1/_MSI/Q
 
 timestamp "Starting Qlik Sense Enterprise Install"  | Out-File $tmpfile -Append
 
-& "c:\tmp\Qlik_Sense_setup.exe" -silent -log "c:\tmp\qliksenseinstall.log" userwithdomain="$combinedName" userpassword="$password" dbpassword="$password" hostname="$vmname"
+& "c:\tmp\Qlik_Sense_setup.exe" -s -l "c:\tmp\qliksenseinstall.log" userwithdomain=$combinedName userpassword=$password dbpassword=$password hostname=$vmname
 
 timestamp "Qlik Sense Enterprise Install Completed" | Out-File $tmpfile -Append
 
