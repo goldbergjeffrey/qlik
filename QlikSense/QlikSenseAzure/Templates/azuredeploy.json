@@ -106,6 +106,12 @@
           "computerName": "[parameters('vmName')]",
           "adminUsername": "[parameters('userName')]",
           "windowsConfiguration": {
+            "additionalUnattendContent": [{
+    "pass": "oobesystem",
+    "component": "Microsoft-Windows-Shell-Setup",
+    "settingName": "AutoLogon",
+    "content": "[concat('<AutoLogon><Domain>', [parameters('vmName')], '</Domain><Username>', [parameters('userName')], '</Username><Password><Value>', [parameters('password')], '</Value></Password><LogonCount>1</LogonCount><Enabled>true</Enabled></AutoLogon>')]"
+            }],
             "provisionVMAgent": true,
             "enableAutomaticUpdates": true
           },
