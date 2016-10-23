@@ -81,7 +81,7 @@ Invoke-WebRequest 'https://da3hntz84uekx.cloudfront.net/QlikSense/3.1.1/1/_MSI/Q
 (timestamp) + ' Starting Qlik Sense Enterprise Install' | Out-File $tmpfile -Append
 
 #& "c:\tmp\Qlik_Sense_setup.exe" -s -l "c:\tmp\qliksenseinstall.log" userwithdomain=$combinedName userpassword=$password dbpassword=$password hostname=$vmname
-Start-Process -FilePath 'c:\tmp\Qlik_Sense_setup.exe' -ArgumentList $SenseInstallParams -Credential $Credentials -Wait -RedirectStandardError 'c:\tmp\errorlog.txt'
+Start-Process -FilePath 'c:\tmp\Qlik_Sense_setup.exe' -ArgumentList $SenseInstallParams -Credential $Credentials -Wait -RedirectStandardError 'c:\tmp\errorlog.txt' -LoadUserProfile
 
 (timestamp) + ' Qlik Sense Enterprise Install Completed' | Out-File $tmpfile -Append
 
