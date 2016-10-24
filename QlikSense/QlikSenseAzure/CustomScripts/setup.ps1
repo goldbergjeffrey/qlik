@@ -8,6 +8,8 @@ if (-Not (Test-Path "c:\tmp"))
 
 $tmpfile = "c:\tmp\customscriptlog.txt"
 
+$config = "c:\tmp\config.txt"
+
 
 # Reading environment variables
 "Environment test" | Out-File $tmpfile -Append
@@ -24,16 +26,14 @@ $password = $Args[2]
 #attempt to decrypt the password
 $combinedName = $vmName + '\' + $userName
 $pass = ConvertTo-SecureString -String $password -AsPlainText -Force
-$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $combinedName, $pass
-$SenseInstallParams = '-s -l c:\tmp\qliksenseinstall.log userwithdomain="' + $combinedName + '" userpassword="' + $password + '" dbpassword="' + $password + '" hostname="' + $vmname + '"'
+#$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $combinedName, $pass
+#$SenseInstallParams = '-s -l c:\tmp\qliksenseinstall.log userwithdomain="' + $combinedName + '" userpassword="' + $password + '" dbpassword="' + $password + '" hostname="' + $vmname + '"'
 
+$passAsPlainText = $pass | ConvertFrom-SecureString
 
-$vmName | Out-File $tmpfile -Append
-$userName | Out-File $tmpfile -Append
-$password | Out-File $tmpfile -Append
-$combinedName | Out-File $tmpfile -Append
-$pass | Out-File $tmpfile -Append 
-$SenseInstallParams | Out-File $tmpfile -Append
+$vmName | Out-File $config -Append
+$combinedName  | Out-File $config -Append
+$passAsPlainText | Out-File $config -Append
 
 
 function Disable-InternetExplorerESC {
@@ -70,39 +70,10 @@ $value = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPo
 New-Item -Path $regPath -Force | Out-Null
 New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null
 
-
-Restart-Computer -Force
-
 # Download QlikSense Setup.exe here!!! (This sample uses Notepad++ as an example)
 #Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Installer.x64.exe' -OutFile "c:\tmp\setup.exe"
-<#
-(timestamp) + ' UserProfile check' | Out-File $tmpfile -Append
-if(test-path 'c:\users\qlik' -Credential $Credentials -eq true)
-{
-	(timestamp) + ' UserProfile for ' + $combinedName + ' exists!' | Out-File $tmpfile -Append
-}
 
 
-(timestamp) + ' Downloading Visual C++ 2010 Redistributable' | Out-File $tmpfile -Append
-Invoke-WebRequest 'https://download.microsoft.com/download/3/2/2/3224B87F-CFA0-4E70-BDA3-3DE650EFEBA5/vcredist_x64.exe' -OutFile "c:\tmp\vcredist_x64.exe"
-
-(timestamp) + ' Starting Visual C++ 2010 Redistributable Install'  | Out-File $tmpfile -Append
-
-& "c:\tmp\vcredist_x64.exe" /q /log 'c:\tmp\vcplusplus2010.log' /norestart
-
-(timestamp) + ' Visual C++ 2010 Redistributable Install Completed' | Out-File $tmpfile -Append
-
-(timestamp) + ' Downloading Qlik Sense 3.1.1' | Out-File $tmpfile -Append
-Invoke-WebRequest 'https://da3hntz84uekx.cloudfront.net/QlikSense/3.1.1/1/_MSI/Qlik_Sense_setup.exe' -OutFile "c:\tmp\Qlik_Sense_setup.exe"
-
-(timestamp) + ' Starting Qlik Sense Enterprise Install' | Out-File $tmpfile -Append
-
-#& "c:\tmp\Qlik_Sense_setup.exe" -s -l "c:\tmp\qliksenseinstall.log" userwithdomain=$combinedName userpassword=$password dbpassword=$password hostname=$vmname
-Start-Process -FilePath 'c:\tmp\Qlik_Sense_setup.exe' -ArgumentList $SenseInstallParams -Credential $Credentials -Wait -RedirectStandardError 'c:\tmp\errorlog.txt' -LoadUserProfile
-
-(timestamp) + ' Qlik Sense Enterprise Install Completed' | Out-File $tmpfile -Append
-
-#& "c:\tmp\setup.exe" /S
 (timestamp) + ' Adding firewall rule to Windows Firewall to match Azure port configuration' | Out-File $tmpfile -Append
 
 New-NetFirewallRule -DisplayName "Qlik Sense" -Direction Inbound -action Allow -Protocol TCP -LocalPort 80,443,4248,4244 | Out-File $tmpfile -Append
@@ -113,4 +84,4 @@ New-NetFirewallRule -DisplayName "Qlik Sense" -Direction Inbound -action Allow -
 (timestamp) + ' Disabling Internet Explorer Security Mode' | Out-File $tmpfile -Append
 Disable-InternetExplorerESC
 
-#>
+Restart-Computer -Force
