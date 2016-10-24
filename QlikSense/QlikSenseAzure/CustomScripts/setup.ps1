@@ -71,7 +71,7 @@ New-Item -Path $regPath -Force | Out-Null
 New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null
 
 
-Restart-Computer
+Restart-Computer -Force
 
 # Download QlikSense Setup.exe here!!! (This sample uses Notepad++ as an example)
 #Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Installer.x64.exe' -OutFile "c:\tmp\setup.exe"

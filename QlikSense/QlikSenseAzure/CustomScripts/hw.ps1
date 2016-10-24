@@ -10,4 +10,4 @@ $user = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 "Hello " + $user | Out-File $tmpfile -Append
 
-Restart-Computer
+Restart-Computer -Force
