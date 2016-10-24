@@ -9,3 +9,5 @@ $tmpfile = "c:\tmp\hw.txt"
 $user = [Security.Principal.WindowsIdentity]::GetCurrent().Name
 
 "Hello " + $user | Out-File $tmpfile -Append
+
+Restart-Computer

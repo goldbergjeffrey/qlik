@@ -110,7 +110,7 @@
     "passName": "oobesystem",
     "componentName": "Microsoft-Windows-Shell-Setup",
     "settingName": "AutoLogon",
-    "content": "[concat('<AutoLogon><Domain>', parameters('vmName'), '</Domain><Username>', parameters('userName'), '</Username><Password><Value>', parameters('password'), '</Value></Password><LogonCount>1</LogonCount><Enabled>true</Enabled></AutoLogon>')]"
+    "content": "[concat('<AutoLogon><Domain>', parameters('vmName'), '</Domain><Username>', parameters('userName'), '</Username><Password><Value>', parameters('password'), '</Value></Password><LogonCount>2</LogonCount><Enabled>true</Enabled></AutoLogon>')]"
             }],
             "provisionVMAgent": true,
             "enableAutomaticUpdates": true
