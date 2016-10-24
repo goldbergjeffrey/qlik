@@ -65,9 +65,7 @@ function timestamp {
 
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
 $Name = "HelloWorld"
-$value = "powershell.exe -ExecutionPolicy Unrestricted `
- -command (invoke-webrequest https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1 -outfile c:\tmp\hw.ps1 `
- | powershell.exe -ExecutionPolicy Unrestricted -file c:\tmp\hw.ps1)"
+$value = "powershell.exe -ExecutionPolicy Unrestricted -command (invoke-webrequest https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1 -outfile c:\tmp\hw.ps1 | powershell.exe -ExecutionPolicy Unrestricted -file c:\tmp\hw.ps1)"
 
 New-Item -Path $regPath -Force | Out-Null
 New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null

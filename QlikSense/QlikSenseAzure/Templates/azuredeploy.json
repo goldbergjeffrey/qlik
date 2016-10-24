@@ -145,7 +145,8 @@
             "autoUpgradeMinorVersion": true,
             "settings": {
               "fileUris": [
-                "https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1"
+                "https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/setup.ps1",
+                "https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1"
               ],
               "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File setup.ps1', ' ', parameters('vmName'), ' ', parameters('userName'), ' ', parameters('password'))]"
             }
