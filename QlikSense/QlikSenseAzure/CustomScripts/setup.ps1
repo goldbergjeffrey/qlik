@@ -68,14 +68,14 @@ $Name = "HelloWorld"
 $value = "powershell.exe -ExecutionPolicy Unrestricted -https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1"
 
 New-Item -Path $regPath -Force | Out-Null
-New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType REG_SZ -Force | Out-Null
+New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null
 
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
 $Name = "HelloWorld"
 $value = "powershell.exe -ExecutionPolicy Unrestricted -https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1"
 
 New-Item -Path $regPath -Force | Out-Null
-New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType REG_SZ -Force | Out-Null
+New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null
 
 
 Restart-Computer
