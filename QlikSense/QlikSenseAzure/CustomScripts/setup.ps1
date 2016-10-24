@@ -63,9 +63,15 @@ function timestamp {
 	return $b
 }
 
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+$Name = "HelloWorld"
+$value = "powershell.exe -ExecutionPolicy Unrestricted -https://raw.githubusercontent.com/goldbergjeffrey/qlik/master/QlikSense/QlikSenseAzure/CustomScripts/hw.ps1"
+
+Restart-Computer
+
 # Download QlikSense Setup.exe here!!! (This sample uses Notepad++ as an example)
 #Invoke-WebRequest 'https://notepad-plus-plus.org/repository/7.x/7.1/npp.7.1.Installer.x64.exe' -OutFile "c:\tmp\setup.exe"
-
+<#
 (timestamp) + ' UserProfile check' | Out-File $tmpfile -Append
 if(test-path 'c:\users\qlik' -Credential $Credentials -eq true)
 {
@@ -102,3 +108,5 @@ New-NetFirewallRule -DisplayName "Qlik Sense" -Direction Inbound -action Allow -
 
 (timestamp) + ' Disabling Internet Explorer Security Mode' | Out-File $tmpfile -Append
 Disable-InternetExplorerESC
+
+#>
