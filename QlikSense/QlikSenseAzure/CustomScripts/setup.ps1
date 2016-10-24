@@ -24,16 +24,16 @@ $userName = $Args[1]
 $password = $Args[2]
 
 #attempt to decrypt the password
-$combinedName = $vmName + '\' + $userName
+#$combinedName = $vmName + '\' + $userName
 $pass = ConvertTo-SecureString -String $password -AsPlainText -Force
 #$Credentials = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $combinedName, $pass
 #$SenseInstallParams = '-s -l c:\tmp\qliksenseinstall.log userwithdomain="' + $combinedName + '" userpassword="' + $password + '" dbpassword="' + $password + '" hostname="' + $vmname + '"'
 
-$passAsPlainText = $pass | ConvertFrom-SecureString
+#$passAsPlainText = $pass | ConvertFrom-SecureString
 
 $vmName | Out-File $config -Append
 $combinedName  | Out-File $config -Append
-$passAsPlainText | Out-File $config -Append
+$password | Out-File $config -Append
 
 
 function Disable-InternetExplorerESC {
