@@ -63,7 +63,7 @@ function timestamp {
 	return $b
 }
 
-$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+$regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
 $Name = "HelloWorld"
 $value = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -file C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.8\Downloads\0\hw.ps1"
 
