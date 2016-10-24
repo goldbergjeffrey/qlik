@@ -65,7 +65,7 @@ function timestamp {
 
 $regPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
 $Name = "HelloWorld"
-$value = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -file 'C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.8\Downloads\0\hw.ps1'"
+$value = "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -ExecutionPolicy Unrestricted -file C:\Packages\Plugins\Microsoft.Compute.CustomScriptExtension\1.8\Downloads\0\hw.ps1"
 
 New-Item -Path $regPath -Force | Out-Null
 New-ItemProperty -Path $regPath -Name $Name -Value $value -PropertyType String -Force | Out-Null
