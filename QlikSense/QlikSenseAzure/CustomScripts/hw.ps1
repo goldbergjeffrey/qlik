@@ -27,6 +27,12 @@ if(test-path 'c:\users\qlik' -Credential $Credentials -eq true)
 	(timestamp) + ' UserProfile for ' + $combinedName + ' exists!' | Out-File $tmpfile -Append
 }
 
+function timestamp {
+	$a = Get-Date
+	$b = $a.ToString('yyyy-mm-ddThh:mm:ssZ')
+	return $b
+}
+
 
 (timestamp) + ' Downloading Visual C++ 2010 Redistributable' | Out-File $tmpfile -Append
 Invoke-WebRequest 'https://download.microsoft.com/download/3/2/2/3224B87F-CFA0-4E70-BDA3-3DE650EFEBA5/vcredist_x64.exe' -OutFile "c:\tmp\vcredist_x64.exe"
